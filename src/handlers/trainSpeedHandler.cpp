@@ -51,6 +51,29 @@ int TrainSpeedHandler::getSpeed() {
 
 void TrainSpeedHandler::setSpeed(const int newSpeed) {
   int adjustedSpeed = (newSpeed > 255) ? 255 : newSpeed;
-  adjustedSpeed = (newSpeed < -256) ? -256 : newSpeed;
+  adjustedSpeed = (adjustedSpeed < -256) ? -256 : adjustedSpeed;
   this->speed = adjustedSpeed;
+
+  if (speed != 0) {
+    // stop first
+    digitalWrite(in1, LOW);
+    digitalWrite(in2, LOW);
+    analogWrite(this->pwmPin, 0);
+    delay(1000);
+  }
+  // set the new speed
+  bool isReverse = (newSpeed < 0);
+  speed = isReverse ? newSpeed * -1 : newSpeed;
+  if (isReverse) {
+    // Go backwards
+    digitalWrite(in1, HIGH);
+    digitalWrite(in2, LOW);
+  } else {
+    // Go forwards
+    digitalWrite(in1, LOW);
+    digitalWrite(in2, HIGH);
+  }
+  analogWrite(this->pwmPin, speed);
+  this->lastChangedMillis = millis();
+  delay(20);
 }

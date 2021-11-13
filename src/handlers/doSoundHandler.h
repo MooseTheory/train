@@ -19,6 +19,7 @@ class DoSoundHandler : public RequestHandler {
   Uri* _uri;
   bool shouldPlaySound;
   uint8_t soundRelayPin;
+  unsigned long lastChangedMillis;
 
  private:
   const String jsonPrefix = "{\"success\": true, \"playSound\": ";

@@ -50,5 +50,11 @@ bool DoSoundHandler::doSound() {
 
 void DoSoundHandler::setDoSound(const bool newDoSound) {
   this->shouldPlaySound = newDoSound;
-  
+  if (this->shouldPlaySound) {
+    digitalWrite(this->soundRelayPin, HIGH);
+  } else {
+    digitalWrite(this->soundRelayPin, LOW);
+  }
+  this->lastChangedMillis = millis();
+  delay(20);
 }

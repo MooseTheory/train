@@ -5,7 +5,11 @@
 
 class TrainSpeedHandler : public RequestHandler {
  public:
-  TrainSpeedHandler(const Uri& uri) : _uri(uri.clone()), speed(0) {}
+  TrainSpeedHandler(const Uri& uri,
+                    const uint8_t pwmPin,
+                    const uint8_t in1,
+                    const uint8_t in2)
+      : _uri(uri.clone()), speed(0), pwmPin(pwmPin), in1(in1), in2(in2) {}
 
   bool handle(ESP8266WebServer& server,
               HTTPMethod requestMethod,
@@ -18,6 +22,8 @@ class TrainSpeedHandler : public RequestHandler {
  protected:
   Uri* _uri;
   int speed;
+  uint8_t pwmPin, in1, in2;
+  unsigned long lastChangedMillis;
 
  private:
   const String jsonPrefix = "{\"success\": true, \"speed\": ";
